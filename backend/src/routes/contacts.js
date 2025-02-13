@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/create", verifyToken, async (req, res) => {
     try {
       const { name, number, email, socials, category } = req.body;
-      const ownerId = req.user.userId; // Make sure this is `userId`
+      const ownerId = req.user.userId; 
 
       if (!ownerId) {
         return res.status(400).json({ error: "User ID is required" });
@@ -28,11 +28,10 @@ router.post("/create", verifyToken, async (req, res) => {
 // Fetch all contacts for logged-in user
 router.get("/", verifyToken, async (req, res) => {
     try {
-      console.log("User ID from token:", req.user.userId); // Debugging log
+      console.log("User ID from token:", req.user.userId); 
   
       const contacts = await Contact.find({ ownerId: req.user.userId }).sort({ createdAt: -1 });
-      console.log("Fetched contacts:", contacts); // Debugging log
-  
+      console.log("Fetched contacts:", contacts);
       res.json(contacts);
     } catch (error) {
       console.error("Error fetching contacts:", error);
@@ -44,7 +43,7 @@ router.get("/", verifyToken, async (req, res) => {
 // Fetch single contact by ID
 router.get("/:id", verifyToken, async (req, res) => {
   try {
-    const contact = await Contact.findOne({ _id: req.params.id, ownerId: req.user.id });
+    const contact = await Contact.findOne({ _id: req.params.id, ownerId: req.user.userId });
 
     if (!contact) {
       return res.status(404).json({ error: "Contact not found" });
@@ -60,7 +59,7 @@ router.get("/:id", verifyToken, async (req, res) => {
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedContact = await Contact.findOneAndUpdate(
-      { _id: req.params.id, ownerId: req.user.id },
+      { _id: req.params.id, ownerId: req.user.userId },
       { $set: req.body },
       { new: true }
     );
@@ -80,7 +79,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const deletedContact = await Contact.findOneAndDelete({
       _id: req.params.id,
-      ownerId: req.user.id,
+      ownerId: req.user.userId,
     });
 
     if (!deletedContact) {

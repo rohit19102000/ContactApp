@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import dotenv from "dotenv";
+import verifyToken from "../middleware/verifyToken.js";
 
 dotenv.config();
 const router = express.Router();
@@ -16,11 +17,8 @@ router.post("/signup", async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "Email already in use" });
 
-    // Create new user
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    
-    const newUser = new User({ name, email, password: hashedPassword });
+    // Create new user (password hashing is handled in UserSchema)
+    const newUser = new User({ name, email, password });
     await newUser.save();
 
     res.status(201).json({ message: "User created successfully" });
@@ -51,25 +49,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Middleware to Verify Token
-const verifyToken = (req, res, next) => {
-    const authHeader = req.header("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Access denied" });
-    }
-    
-    const token = authHeader.split(" ")[1]; // Extract the token part
-    
-  if (!token) return res.status(401).json({ message: "Access denied" });
-
-  try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
-    next();
-  } catch (error) {
-    res.status(400).json({ message: "Invalid token" });
-  }
-};
+// Logout Route
+router.post("/logout", (req, res) => {
+  res.json({ message: "Logout successful" });
+});
 
 // Protected Route Example
 router.get("/profile", verifyToken, (req, res) => {
