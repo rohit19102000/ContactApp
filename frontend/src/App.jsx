@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import { useAuthStore } from  "./store/useAuthStore.js"
 import Navbar from "./components/Navbar.jsx";
 import Contacts from "./pages/Contacts.jsx";
 import About from "./pages/About.jsx";

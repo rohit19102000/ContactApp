@@ -1,11 +1,19 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <nav className="bg-base-200 p-4 flex justify-between items-center shadow-md">
-      <div className="text-xl font-bold">ContactsApp</div>
+      {/* Logo - Clickable to go Home */}
+      <Link to="/" className="text-xl font-bold">
+        ContactsApp
+      </Link>
 
-      <div className="flex gap-4">
+      {/* Desktop Links */}
+      <div className="hidden md:flex gap-4">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -38,6 +46,7 @@ const Navbar = () => {
         >
           Settings
         </NavLink>
+
         <NavLink
           to="/profile"
           className={({ isActive }) =>
@@ -49,6 +58,66 @@ const Navbar = () => {
           Profile
         </NavLink>
       </div>
+
+      {/* Mobile Menu Button */}
+      <div className="md:hidden">
+        <button onClick={() => setIsOpen(!isOpen)} className="p-2">
+          <FaBars className="text-2xl" />
+        </button>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isOpen && (
+        <div className="absolute top-16 right-4 bg-base-100 shadow-lg rounded-lg p-4 flex flex-col gap-2 w-48 md:hidden">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `block px-3 py-2 rounded-lg transition ${
+                isActive ? "bg-primary text-white" : "hover:bg-base-300"
+              }`
+            }
+            onClick={() => setIsOpen(false)}
+          >
+            Contacts
+          </NavLink>
+
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `block px-3 py-2 rounded-lg transition ${
+                isActive ? "bg-primary text-white" : "hover:bg-base-300"
+              }`
+            }
+            onClick={() => setIsOpen(false)}
+          >
+            About
+          </NavLink>
+
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `block px-3 py-2 rounded-lg transition ${
+                isActive ? "bg-primary text-white" : "hover:bg-base-300"
+              }`
+            }
+            onClick={() => setIsOpen(false)}
+          >
+            Settings
+          </NavLink>
+
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `block px-3 py-2 rounded-lg transition ${
+                isActive ? "bg-primary text-white" : "hover:bg-base-300"
+              }`
+            }
+            onClick={() => setIsOpen(false)}
+          >
+            Profile
+          </NavLink>
+        </div>
+      )}
     </nav>
   );
 };
