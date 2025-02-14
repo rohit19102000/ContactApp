@@ -12,9 +12,11 @@ import {THEMES} from './constants/index'
 
 
 function App() {
+
+  const {theme} = useThemeStore();
   return (
     <Router>
-      <div className="min-h-screen flex flex-col" data-theme="dark">
+      <div className="min-h-screen flex flex-col" data-theme={theme}>
         <Navbar />
         <div className="p-4">
           <Routes>

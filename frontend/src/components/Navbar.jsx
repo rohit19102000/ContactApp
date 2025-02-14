@@ -1,19 +1,56 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-export default function Navbar() {
+const Navbar = () => {
   return (
-    <nav className="bg-base-200 shadow-md p-4 flex justify-between">
-      {/* Left Side - Contacts */}
-      <div>
-        <Link to="/" className="btn btn-ghost text-lg">Contacts</Link>
-      </div>
+    <nav className="bg-base-200 p-4 flex justify-between items-center shadow-md">
+      <div className="text-xl font-bold">ContactsApp</div>
 
-      {/* Right Side - Other Links */}
       <div className="flex gap-4">
-        <Link to="/about" className="btn btn-ghost">About</Link>
-        <Link to="/settings" className="btn btn-ghost">Settings</Link>
-        <Link to="/profile" className="btn btn-ghost">Profile</Link>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `px-3 py-2 rounded-lg transition ${
+              isActive ? "bg-primary text-white" : "hover:bg-base-300"
+            }`
+          }
+        >
+          Contacts
+        </NavLink>
+
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            `px-3 py-2 rounded-lg transition ${
+              isActive ? "bg-primary text-white" : "hover:bg-base-300"
+            }`
+          }
+        >
+          About
+        </NavLink>
+
+        <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            `px-3 py-2 rounded-lg transition ${
+              isActive ? "bg-primary text-white" : "hover:bg-base-300"
+            }`
+          }
+        >
+          Settings
+        </NavLink>
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `px-3 py-2 rounded-lg transition ${
+              isActive ? "bg-primary text-white" : "hover:bg-base-300"
+            }`
+          }
+        >
+          Profile
+        </NavLink>
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
