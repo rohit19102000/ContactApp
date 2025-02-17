@@ -1,9 +1,20 @@
-import React from 'react'
+import Sidebar from "../components/Sidebar";
+import Dashboard from "../components/Dashboard";
 
-function Contacts() {
+const Contacts = () => {
   return (
-    <div>Contacts</div>
-  )
-}
+    <div className="flex h-screen">
+      {/* Sidebar - Fixed Width */}
+      <div className="w-64 bg-base-200 p-4 hidden md:block">
+        <Sidebar />
+      </div>
 
-export default Contacts
+      {/* Dashboard - Takes Remaining Space */}
+      <div className="flex-1 p-4">
+        <Dashboard />
+      </div>
+    </div>
+  );
+};
+
+export default Contacts;
