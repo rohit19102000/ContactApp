@@ -24,7 +24,26 @@ function App() {
 
   return (
     <Router>
-    <Toaster position="top-center" />
+
+<Toaster
+  position="top-center"
+  toastOptions={{
+    success: {
+      style: {
+        background: 'rgba(50, 205, 50, 0.8)', 
+        color: 'white',
+      },
+      className: "toast-animation", // Custom class for animation
+    },
+    error: {
+      style: {
+        background: 'rgba(255, 0, 0, 0.8)', 
+        color: 'white',
+      },
+      className: "toast-animation",
+    },
+  }}
+/>
       <div className="min-h-screen flex flex-col" data-theme={theme}>
         <Navbar />
         <div className="p-4">
