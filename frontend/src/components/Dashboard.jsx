@@ -4,6 +4,7 @@ import axiosInstance from "../utils/axiosInstance";
 import CreateContactModal from "../Modals/CreateContactModal";
 import EditContactModal from "../Modals/EditContactModal"; 
 import ContactCard from "./ContactCard.jsx";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const { selectedCategory, selectedFilter, selectedDataFields } = useAppStore();
@@ -30,8 +31,10 @@ const Dashboard = () => {
     if (!window.confirm("Are you sure you want to delete this contact?")) return;
     try {
       await axiosInstance.delete(`/contacts/${id}`);
+      toast.success(`Contact "${id}" deleted successfully!`); 
       fetchContacts();
     } catch (error) {
+      toast.error("Failed to delete contact.");
       console.error("Error deleting contact:", error);
     }
   };

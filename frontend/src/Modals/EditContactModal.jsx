@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import toast from "react-hot-toast";
 
 const EditContactModal = ({ contact, onClose, onContactUpdated }) => {
   const [updatedContact, setUpdatedContact] = useState({ ...contact });
@@ -13,8 +14,10 @@ const EditContactModal = ({ contact, onClose, onContactUpdated }) => {
     try {
       await axiosInstance.put(`/contacts/${contact._id}`, updatedContact);
       onContactUpdated();
+      toast.success(`Contact "${updatedContact.name}" updated successfully!`); 
       onClose();
     } catch (error) {
+        toast.error("Failed to update contact.");
       console.error("Error updating contact:", error);
     }
   };

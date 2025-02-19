@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import toast from "react-hot-toast";
 
 const CreateContactModal = ({ onClose, onContactAdded }) => {
   const [contact, setContact] = useState({
@@ -20,7 +21,9 @@ const CreateContactModal = ({ onClose, onContactAdded }) => {
         await axiosInstance.post("/contacts/create", contact);
       onContactAdded(); 
       onClose();
+      toast.success(`added ${contact.name}to contacts  successfully!`); 
     } catch (error) {
+        toast.error(` failed to add ${contact.name}  contact : ${error} `); 
       console.error("Error adding contact:", error);
     }
   };

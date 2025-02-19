@@ -11,6 +11,7 @@ import { useThemeStore } from "./store/useThemeStore"
 import {THEMES} from './constants/index'
 import { useAuthStore } from "./store/useAuthStore.js";
 import Signup from "./pages/Signup.jsx";
+import { Toaster } from "react-hot-toast";
 
 
 
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <Router>
+    <Toaster position="top-center" />
       <div className="min-h-screen flex flex-col" data-theme={theme}>
         <Navbar />
         <div className="p-4">
