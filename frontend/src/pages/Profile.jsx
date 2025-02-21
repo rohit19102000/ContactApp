@@ -6,19 +6,24 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); 
-    navigate("/login"); 
+    logout();
+    navigate("/login");
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-base-200">
-      <div className="card w-96 bg-base-100 shadow-xl p-6">
-        <h2 className="text-2xl font-bold text-center mb-4">Profile</h2>
-        <div className="text-center">
-          <p><strong>Name:</strong> {user?.name}</p>
-          <p><strong>Email:</strong> {user?.email}</p>
-        </div>
-        <button className="btn btn-error w-full mt-4" onClick={handleLogout}>
+    <div className="flex flex-col min-h-screen items-center justify-center bg-base-200">
+      {/* User Info at the Top Center */}
+      <h1 className="text-3xl font-bold text-primary mb-2 text-center">
+        Hello, {user?.name} 👋
+      </h1>
+      <p className="text-gray-500 text-lg mb-6 text-center mb-5">
+        You are currently logged in as <span className="font-semibold ">{user?.email}</span>
+      </p>
+
+      {/* Logout Section */}
+      <div className="card w-96 bg-base-100 shadow-xl p-6 text-center">
+        <p className="text-lg mb-3">Want to log out?</p>
+        <button className="btn btn-error w-full" onClick={handleLogout}>
           Logout
         </button>
       </div>
