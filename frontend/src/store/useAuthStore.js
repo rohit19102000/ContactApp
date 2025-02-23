@@ -5,9 +5,8 @@ import { toast } from "react-hot-toast";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useAuthStore = create((set) => ({
-  user: null,
+  user: JSON.parse(localStorage.getItem("user")) || null, // Load user from storage
   token: localStorage.getItem("token") || null,
-
 
   signup: async (name, email, password) => {
     try {
@@ -19,25 +18,30 @@ export const useAuthStore = create((set) => ({
         set({ user: loginResponse.data.user, token: loginResponse.data.token });
 
         localStorage.setItem("token", loginResponse.data.token);
+        localStorage.setItem("user", JSON.stringify(loginResponse.data.user)); // Store user
+
         toast.success("Signup successful! Logged in.");
-        return true; 
+        return true;
       }
 
       toast.error("Signup failed. Please try again.");
-      return false; 
+      return false;
     } catch (error) {
-
       toast.error(error.response?.data?.message || "Signup failed.");
       console.error("Signup and login error:", error.response?.data?.message || error.message);
-      return false; 
+      return false;
     }
   },
-  
+
   login: async (email, password) => {
     try {
       const res = await axiosInstance.post("/auth/login", { email, password });
+
       set({ user: res.data.user, token: res.data.token });
+
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // Store user
+
       toast.success("Login successful!");
       return true;
     } catch (error) {
@@ -49,9 +53,10 @@ export const useAuthStore = create((set) => ({
 
   logout: () => {
     set({ user: null, token: null });
+
     localStorage.removeItem("token");
+    localStorage.removeItem("user"); // Remove user
+
     toast.success("Logout successful!");
   },
-
-
 }));

@@ -4,6 +4,7 @@ import axiosInstance from "../utils/axiosInstance";
 import CreateContactModal from "../Modals/CreateContactModal";
 import EditContactModal from "../Modals/EditContactModal"; 
 import ContactCard from "./ContactCard.jsx";
+import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Dashboard = () => {
@@ -13,17 +14,22 @@ const Dashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [contactToEdit, setContactToEdit] = useState(null);
+  const [isFetchingContacts, setIsFetchingContacts] = useState(false);
 
   useEffect(() => {
     fetchContacts();
   }, []);
 
   const fetchContacts = async () => {
+    setIsFetchingContacts(true);
     try {
       const response = await axiosInstance.get("/contacts");
       setContacts(response.data);
     } catch (error) {
       console.error("Error fetching contacts:", error);
+      toast.error("Failed to fetch contacts.");
+    } finally {
+      setIsFetchingContacts(false);
     }
   };
 
@@ -31,7 +37,7 @@ const Dashboard = () => {
     if (!window.confirm("Are you sure you want to delete this contact?")) return;
     try {
       await axiosInstance.delete(`/contacts/${id}`);
-      toast.success(`Contact "${id}" deleted successfully!`); 
+      toast.success(`Contact "${id}" deleted successfully!`);
       fetchContacts();
     } catch (error) {
       toast.error("Failed to delete contact.");
@@ -42,7 +48,7 @@ const Dashboard = () => {
   const filteredContacts = contacts
     .filter((contact) =>
       (selectedCategory === "All" || contact.category === selectedCategory) &&
-      contact.name.toLowerCase().includes(searchQuery.toLowerCase()) 
+      contact.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => {
       if (selectedFilter === "A-Z") return a.name.localeCompare(b.name);
@@ -62,27 +68,28 @@ const Dashboard = () => {
       />
 
       {/* Create Contact Button */}
-      <button className="btn btn-primary" onClick={() => setModalOpen(true)}>➕ Create New Contact</button>
+      <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
+        ➕ Create New Contact
+      </button>
 
       {/* Contacts List */}
-      {filteredContacts.map((contact) => (
-       
-        <ContactCard 
-        
-    key={contact._id} 
-    contact={contact} 
-    setContactToEdit={setContactToEdit} 
-    setEditModalOpen={setEditModalOpen} 
-    deleteContact={deleteContact} 
-    selectedDataFields={selectedDataFields}
-     /> 
-
-     
-   
-      ))}
-
-      {/* No contacts found message */}
-      {filteredContacts.length === 0 && (
+      {isFetchingContacts ? (
+        <div className="flex flex-col items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+          <p>Loading...</p>
+        </div>
+      ) : filteredContacts.length > 0 ? (
+        filteredContacts.map((contact) => (
+          <ContactCard
+            key={contact._id}
+            contact={contact}
+            setContactToEdit={setContactToEdit}
+            setEditModalOpen={setEditModalOpen}
+            deleteContact={deleteContact}
+            selectedDataFields={selectedDataFields}
+          />
+        ))
+      ) : (
         <p className="text-center text-gray-500">No contacts found.</p>
       )}
 
