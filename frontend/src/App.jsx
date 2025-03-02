@@ -12,16 +12,20 @@ import {THEMES} from './constants/index'
 import { useAuthStore } from "./store/useAuthStore.js";
 import Signup from "./pages/Signup.jsx";
 import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 
 
 
 function App() {
 
-  const {theme} = useThemeStore();
+  const {theme,fetchTheme} = useThemeStore();
   const { token } = useAuthStore();
 
 
+  useEffect(() => {
+    fetchTheme(); // Fetch theme when the app loads
+  }, [fetchTheme]);
   return (
     <Router>
 

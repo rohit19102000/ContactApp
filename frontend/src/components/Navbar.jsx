@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="bg-base-200 p-4 flex justify-between items-center shadow-md">
       {/* Logo - Clickable to go Home */}
-      <Link to="/" className="text-xl font-bold">
+      <Link to="/" className="text-xl font-bold text-primary">
         ContactsApp
       </Link>
 

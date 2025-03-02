@@ -1,10 +1,21 @@
 import { THEMES } from "../constants";
 import { useThemeStore } from "../store/useThemeStore";
 
-
+import { toast } from "react-hot-toast";
+import axiosInstance from "../utils/axiosInstance";
 
 const Settings = () => {
   const { theme, setTheme } = useThemeStore();
+  const handleThemeChange = async (newTheme) => {
+    try {
+      setTheme(newTheme);
+  
+      await axiosInstance.put("/auth/theme", { theme: newTheme });
+  
+    } catch (error) {
+      console.error("Failed to update theme:", error);
+    }
+  };
 
   return (
     <div className="h-screen container mx-auto px-4 pt-20 max-w-5xl">
@@ -22,7 +33,7 @@ const Settings = () => {
                 group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors
                 ${theme === t ? "bg-base-200" : "hover:bg-base-200/50"}
               `}
-              onClick={() => setTheme(t)}
+              onClick={() => handleThemeChange(t)}
             >
               <div className="relative h-8 w-full rounded-md overflow-hidden" data-theme={t}>
                 <div className="absolute inset-0 grid grid-cols-4 gap-px p-1">
@@ -38,10 +49,9 @@ const Settings = () => {
             </button>
           ))}
         </div>
-
-       
       </div>
     </div>
   );
 };
+
 export default Settings;

@@ -8,13 +8,13 @@ dotenv.config();
 // Signup Controller
 export const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, theme = "dark" } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "Email already in use" });
 
-    // Create new user (password hashing is handled in UserSchema)
-    const newUser = new User({ name, email, password });
+    // Create new user with default theme
+    const newUser = new User({ name, email, password, theme });
     await newUser.save();
 
     res.status(201).json({ message: "User created successfully" });
@@ -53,4 +53,28 @@ export const logout = (req, res) => {
 // Protected Profile Controller
 export const getProfile = (req, res) => {
   res.json({ message: "Protected route accessed", userId: req.user.userId });
+};
+
+
+// Get User's Theme
+export const getTheme = async (req, res) => {
+  try {
+    const userId = req.user.userId; // Assuming authentication middleware sets req.user
+    const user = await User.findById(userId);
+    res.json({ theme: user.theme || "dark" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to get theme" });
+  }
+};
+
+// Update User's Theme
+export const updateTheme = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { theme } = req.body;
+    const user = await User.findByIdAndUpdate(userId, { theme }, { new: true });
+    res.json({ theme: user.theme });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update theme" });
+  }
 };
