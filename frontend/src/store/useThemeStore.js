@@ -1,6 +1,6 @@
 
 import { create } from "zustand";
-import axiosInstance from "../utils/axiosInstance"; // Use your axios instance
+import axiosInstance from "../utils/axiosInstance"; 
 import toast from "react-hot-toast";
 
 export const useThemeStore = create((set) => ({

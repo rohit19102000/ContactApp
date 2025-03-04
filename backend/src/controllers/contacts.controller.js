@@ -44,7 +44,6 @@ export const getContactById = async (req, res) => {
   }
 };
 
-// Update contact by ID
 export const updateContact = async (req, res) => {
   try {
     const updatedContact = await Contact.findOneAndUpdate(
@@ -63,7 +62,7 @@ export const updateContact = async (req, res) => {
   }
 };
 
-// Delete contact by ID
+
 export const deleteContact = async (req, res) => {
   try {
     const deletedContact = await Contact.findOneAndDelete({

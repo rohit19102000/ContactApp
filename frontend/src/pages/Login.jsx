@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await login(email, password);
-    if (success) navigate("/");  // Redirect to contacts page
+    if (success) navigate("/");
   };
 
   return (

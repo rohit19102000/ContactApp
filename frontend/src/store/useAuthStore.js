@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useAuthStore = create((set) => ({
-  user: JSON.parse(localStorage.getItem("user")) || null, // Load user from storage
+  user: JSON.parse(localStorage.getItem("user")) || null, 
   token: localStorage.getItem("token") || null,
 
   signup: async (name, email, password) => {
@@ -18,7 +18,7 @@ export const useAuthStore = create((set) => ({
         set({ user: loginResponse.data.user, token: loginResponse.data.token });
 
         localStorage.setItem("token", loginResponse.data.token);
-        localStorage.setItem("user", JSON.stringify(loginResponse.data.user)); // Store user
+        localStorage.setItem("user", JSON.stringify(loginResponse.data.user));
 
         toast.success("Signup successful! Logged in.");
         return true;
@@ -40,7 +40,7 @@ export const useAuthStore = create((set) => ({
       set({ user: res.data.user, token: res.data.token });
 
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user)); // Store user
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       toast.success("Login successful!");
       return true;
@@ -55,7 +55,7 @@ export const useAuthStore = create((set) => ({
     set({ user: null, token: null });
 
     localStorage.removeItem("token");
-    localStorage.removeItem("user"); // Remove user
+    localStorage.removeItem("user"); 
 
     toast.success("Logout successful!");
   },

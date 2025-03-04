@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
 import { useAppStore } from "../store/useAppStore.js";
 import axiosInstance from "../utils/axiosInstance";
 import CreateContactModal from "../Modals/CreateContactModal";
-import EditContactModal from "../Modals/EditContactModal"; 
+import EditContactModal from "../Modals/EditContactModal";
 import ContactCard from "./ContactCard.jsx";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { gsap } from "gsap";
+import { useEffect, useRef, useState } from "react";
 
 const Dashboard = () => {
   const { selectedCategory, selectedFilter, selectedDataFields } = useAppStore();
@@ -16,9 +17,21 @@ const Dashboard = () => {
   const [contactToEdit, setContactToEdit] = useState(null);
   const [isFetchingContacts, setIsFetchingContacts] = useState(false);
 
+  const cardsRef = useRef([]);
+
   useEffect(() => {
     fetchContacts();
   }, []);
+
+  useEffect(() => {
+    if (contacts.length > 0) {
+      gsap.fromTo(
+        cardsRef.current,
+        { x: window.innerWidth, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power2.out" }
+      );
+    }
+  }, [contacts]);
 
   const fetchContacts = async () => {
     setIsFetchingContacts(true);
@@ -58,7 +71,6 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col space-y-4 p-4">
-      {/* Search Bar */}
       <input
         type="text"
         placeholder="Search contacts..."
@@ -67,36 +79,35 @@ const Dashboard = () => {
         className="input input-bordered w-full"
       />
 
-      {/* Create Contact Button */}
       <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
         ➕ Create New Contact
       </button>
 
-      {/* Contacts List */}
       {isFetchingContacts ? (
         <div className="flex flex-col items-center justify-center">
           <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
           <p>Loading...</p>
         </div>
       ) : filteredContacts.length > 0 ? (
-        filteredContacts.map((contact) => (
-          <ContactCard
+        filteredContacts.map((contact, index) => (
+          <div
             key={contact._id}
-            contact={contact}
-            setContactToEdit={setContactToEdit}
-            setEditModalOpen={setEditModalOpen}
-            deleteContact={deleteContact}
-            selectedDataFields={selectedDataFields}
-          />
+            ref={(el) => (cardsRef.current[index] = el)}
+          >
+            <ContactCard
+              contact={contact}
+              setContactToEdit={setContactToEdit}
+              setEditModalOpen={setEditModalOpen}
+              deleteContact={deleteContact}
+              selectedDataFields={selectedDataFields}
+            />
+          </div>
         ))
       ) : (
         <p className="text-center text-gray-500">No contacts found.</p>
       )}
 
-      {/* Create Contact Modal */}
       {isModalOpen && <CreateContactModal onClose={() => setModalOpen(false)} onContactAdded={fetchContacts} />}
-
-      {/* Edit Contact Modal */}
       {isEditModalOpen && <EditContactModal contact={contactToEdit} onClose={() => setEditModalOpen(false)} onContactUpdated={fetchContacts} />}
     </div>
   );

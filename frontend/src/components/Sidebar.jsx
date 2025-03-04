@@ -22,8 +22,12 @@ const Sidebar = () => {
       </div>
 
       {/* Sidebar (visible on desktop and as a pop-up on mobile) */}
+      
       <div className={`w-64 bg-base-200 h-[calc(100vh-60px)] p-4 border-r border-base-300 shadow-lg flex flex-col space-y-8 md:flex md:w-64 md:h-[calc(100vh-60px)] ${isMobileSidebarOpen ? "fixed inset-0 z-50" : "hidden md:block"}`}>
+        
         {/* Close button for mobile sidebar */}
+
+
         <div className="md:hidden absolute top-4 right-4">
           <button onClick={() => setMobileSidebarOpen(false)} className="text-3xl text-primary">
             <HiX /> 
@@ -31,6 +35,7 @@ const Sidebar = () => {
         </div>
 
         {/* Categories */}
+      
         <div className="flex flex-col space-y-2">
           <h2 
             className="font-semibold text-lg text-primary cursor-pointer flex justify-between items-center"
