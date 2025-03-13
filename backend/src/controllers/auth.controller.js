@@ -59,7 +59,7 @@ export const getProfile = (req, res) => {
 // Get User's Theme
 export const getTheme = async (req, res) => {
   try {
-    const userId = req.user.userId; // Assuming authentication middleware sets req.user
+    const userId = req.user.userId; 
     const user = await User.findById(userId);
     res.json({ theme: user.theme || "dark" });
   } catch (err) {
