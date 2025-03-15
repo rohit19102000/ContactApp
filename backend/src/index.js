@@ -5,10 +5,12 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.js";
 import contactRoutes from "./routes/contacts.js";
+import path from  "path"
 
 dotenv.config(); 
 
 const app = express();
+const __dirname = path.resolve();
 
 // Middleware
 app.use(
@@ -18,6 +20,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(express.json()); 
 
 
@@ -35,6 +38,13 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/contacts", contactRoutes);
 
+if(process.env.NODE_ENV==="production"){
+  app.use(express.static(path.join(__dirname,"../frontend/dist")));
+
+  app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"../frontend","dist","index.html"))
+  })
+}
 
 // Default Route
 app.get("/", (req, res) => {
@@ -43,6 +53,7 @@ app.get("/", (req, res) => {
 
 // Start Server
 const PORT = process.env.PORT || 5001;
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
