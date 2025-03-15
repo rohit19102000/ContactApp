@@ -5,7 +5,8 @@ import EditContactModal from "../Modals/EditContactModal";
 import ContactCard from "./ContactCard.jsx";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
-import { gsap } from "gsap";
+import gsap from "gsap";
+
 import { useEffect, useRef, useState } from "react";
 
 const Dashboard = () => {
